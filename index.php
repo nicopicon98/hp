@@ -40,10 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['search'])) {
         id="search" 
         type="text" 
         placeholder="Search" 
-        autocomplete="off" 
+        autocomplete="off"
         name="search" 
         aria-label="Search" 
-        value="<?php echo isset($_GET['search']) || isset($_POST['search']) ? ($_GET['search'] || $_POST['search']) : ''; ?>">
+        value="<?php echo (isset($_GET['search']) || isset($_POST['search'])) ? $key_search : ''; ?>">
         <div id="display"></div>
       </form>
     </section>
