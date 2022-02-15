@@ -63,4 +63,38 @@ class basedatos
     $result = $stmt->get_result();
     return $result;
   }
+
+
+
+  public function login($email, $password)
+  {
+    $sql = "SELECT * FROM users WHERE email = ?";
+    $stmt = $this->con->prepare($sql);
+    $stmt->bind_param('s', $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $validation = $this->login_validation($result, $password);
+    return $validation;
+  }
+
+  /**
+   * 1 -> ok
+   * 2 -> user doesn't exist or password is not correct  
+   */
+
+  public function login_validation($result, $password)
+  {
+    if ($result->num_rows === 1) {
+      $user = mysqli_fetch_assoc($result);
+      $auth = password_verify($password, $user['passwords']);
+      if ($auth) :
+        session_start();
+        $_SESSION['usuario'] = $user['email'];
+        return true;
+      else :
+        return false;
+      endif;
+    }
+    return false;
+  }
 }
